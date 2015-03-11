@@ -1,5 +1,5 @@
 
-PROGS= swd
+PROGS= swd gitst
 
 all: $(PROGS)
 
