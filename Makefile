@@ -1,6 +1,7 @@
 
+PROGS= swd
 
-all: swd
+all: $(PROGS)
 
 install:
 	echo 'Install goes here :/'

@@ -38,9 +38,7 @@ main(int argc, char **argv)
     return 1;
   }
 
-  char *npath = path;
-  npath += 2;
-  fputs(npath, stdout);
+  fputs(path, stdout);
   printf("\n");
 
   if (hmflg)
