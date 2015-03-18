@@ -12,14 +12,16 @@
 #define PATH_MAX 1024
 
 void useage(void);
+int  starts_with(char*, char*, int);
 
 int
 main(int argc, char **argv)
 {
 
   int c, width = -1;
-  char path[PATH_MAX];
+  char pathbuf[PATH_MAX];
   char *home;
+  char *path;
 
   while((c = getopt(argc, argv, "hw:")) != -1)
   {
@@ -36,40 +38,45 @@ main(int argc, char **argv)
     }
   } 
   
-  if (getcwd(path, PATH_MAX * sizeof(char)) == NULL )
+  if (getcwd(pathbuf, PATH_MAX * sizeof(char)) == NULL )
   {
     perror("Error getting current working directory");
     return 1;
   }
 
   home = getenv("HOME");
-  printf("home=%s\n", home);
-  printf("width=%d\n", width);
 
 
   int homelen = strlen(home);
+  int in_home = starts_with(home, pathbuf, homelen);
 
-  char homematch = 1; 
-  for(int i=0; i < homelen; i++ )
+  if(in_home)
+    path = pathbuf + homelen + 1;
+  else
+    path = pathbuf;
+
+  if (in_home) 
   {
-    if (path[i] != home[i]) 
-    {
-      homematch = 0;
-      break;
-    }
+    putchar('~');
+    putchar('/');
   }
-
-  printf("Home match? %d\n", homematch);
-
-  char *rest;
-  if(homematch) {
-    rest = (char*)path + (homelen);
-    printf("the rest: %s\n", rest);
-  }
+  printf("%s\n", path);
 
   return 0;
 }
 
+int
+starts_with(char *needle, char *haystack, int len)
+{
+  for(int i =0; i < len; i++)
+  {
+    if(needle[i] != haystack[i])
+    {
+      return 0;
+    }
+  }
+  return 1;
+}
 
 void
 useage()
