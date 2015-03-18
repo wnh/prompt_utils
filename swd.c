@@ -51,16 +51,35 @@ main(int argc, char **argv)
   int in_home = starts_with(home, pathbuf, homelen);
 
   if(in_home)
-    path = pathbuf + homelen + 1;
+    path = pathbuf + homelen;
   else
     path = pathbuf;
 
   if (in_home) 
   {
     putchar('~');
-    putchar('/');
   }
-  printf("%s\n", path);
+
+  int next = 0;
+  char *lastpth = NULL;
+  while(*path != '\0')
+  {
+    if(next)
+    {
+      putchar(*path);
+      next = 0;
+    }
+
+    if(*path == '/')
+    {
+      putchar(*path);
+      next = 1;
+      lastpth = path +2;
+    }
+    path++;
+  }
+
+  puts(lastpth);
 
   return 0;
 }
