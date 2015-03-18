@@ -1,10 +1,16 @@
 
-PROGS= swd gitst
+PROGS=  swd gitst
+
+PREFIX= /usr/local
 
 all: $(PROGS)
 
-install:
-	echo 'Install goes here :/'
+clean:
+	rm $(PROGS) *.o
 
-.PHONEY: all
+install:
+	install $(PROGS) $(PREFIX)/bin
+	
+
+.PHONEY: all clean install
 

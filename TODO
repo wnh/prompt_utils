@@ -1,0 +1,7 @@
+
+== gst ==
+
+ - add output to mark staged files
+ - add output to mark added files
+ - add output to mark modified files
+ - add options to chage brace type (or none)

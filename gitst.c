@@ -1,18 +1,22 @@
 
-
-
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 #define GITBUF 2048
 
 int
 main(int argc, char **argv)
 {
-
   int pid, ret;
   int pipes[2];
+  char gitbuff[GITBUF];
+  size_t gitlen;
+  char b;
+  char *br;
+  int childst;
 
   if(pipe(pipes) != 0)
   {
@@ -20,7 +24,7 @@ main(int argc, char **argv)
     exit(1);
   }
 
-  if(-1 == (pid = fork()))
+  if((pid = fork()) == -1)
   {
     perror("Error forking git");
     exit(1);
@@ -38,22 +42,25 @@ main(int argc, char **argv)
       perror("Error duplicating stdout");
       exit(1);
     }
-    ret =  execl("/usr/bin/git", "git", "status", "-s", "-b", (char*)0);
+    close(STDERR_FILENO);
+    ret =  execl("/usr/bin/git", "git", "status", "-z", "-b", (char*)0);
   }
 
-  wait(pid);
-  printf("subprocess finished\n");
-
-  char gitbuff[GITBUF];
-  size_t gitlen;
-  char b;
+  waitpid(pid, &childst, 0);
+  if(childst != 0) {
+    exit(2);
+  }
 
   gitlen = read(pipes[0], gitbuff, GITBUF);
+  br = &gitbuff[3];
+  putchar('(');
 
-  // TODO(wnh): Make this not write into someone elses memory
-  gitbuff[gitlen] = '\0';
+  while(*br != '.' && *br != '\0')
+  {
+    putchar(*br++);
+  }
 
-  printf("Read %d chars from git\n", (int)gitlen);
-  printf("stdout = %s", gitbuff);
+  putchar(')');
+  putchar('\n');
 }
 
