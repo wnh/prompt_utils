@@ -43,7 +43,7 @@ main(int argc, char **argv)
       exit(1);
     }
     close(STDERR_FILENO);
-    ret =  execl("/usr/bin/git", "git", "status", "-z", "-b", (char*)0);
+    ret =  execlp("git", "git", "status", "-z", "-b", (char*)0);
   }
 
   waitpid(pid, &childst, 0);
