@@ -87,7 +87,8 @@ main(int argc, char **argv)
 int
 starts_with(char *needle, char *haystack, int len)
 {
-  for(int i =0; i < len; i++)
+  int i;
+  for(i=0; i < len; i++)
   {
     if(needle[i] != haystack[i])
     {
