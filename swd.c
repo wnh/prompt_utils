@@ -20,8 +20,7 @@ main(int argc, char **argv)
 
   int c, width = -1;
   char pathbuf[PATH_MAX];
-  char *home;
-  char *path;
+  char *home, *realhome, *path;
   int next = 0;
   char *lastpth = NULL;
 
@@ -48,6 +47,15 @@ main(int argc, char **argv)
 
   home = getenv("HOME");
 
+  realhome = realpath(home, NULL);
+  if(realhome != NULL)
+  {
+    home = realhome;
+  }
+  else {
+    perror("Faild resolving home path");
+    exit(1);
+  }
 
   int homelen = strlen(home);
   int in_home = starts_with(home, pathbuf, homelen);
