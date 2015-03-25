@@ -1,16 +1,16 @@
 
-PROGS=  swd gitst
+PROGS=     swd gitst
 
-PREFIX= /usr/local
+PREFIX=    /usr/local
+BINDIR=    $(PREFIX)/bin
 
 all: $(PROGS)
 
 clean:
-	rm $(PROGS) *.o
+	rm $(PROGS)
 
 install:
-	install $(PROGS) $(PREFIX)/bin
-	
+	install $(PROGS) $(BINDIR)
 
 .PHONEY: all clean install
 

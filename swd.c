@@ -22,6 +22,8 @@ main(int argc, char **argv)
   char pathbuf[PATH_MAX];
   char *home;
   char *path;
+  int next = 0;
+  char *lastpth = NULL;
 
   while((c = getopt(argc, argv, "hw:")) != -1)
   {
@@ -50,6 +52,7 @@ main(int argc, char **argv)
   int homelen = strlen(home);
   int in_home = starts_with(home, pathbuf, homelen);
 
+
   if(in_home)
     path = pathbuf + homelen;
   else
@@ -60,8 +63,6 @@ main(int argc, char **argv)
     putchar('~');
   }
 
-  int next = 0;
-  char *lastpth = NULL;
   while(*path != '\0')
   {
     if(next)
@@ -79,7 +80,10 @@ main(int argc, char **argv)
     path++;
   }
 
-  puts(lastpth);
+  if(lastpth != NULL)
+    puts(lastpth);
+  else
+    putchar('\n');
 
   return 0;
 }
