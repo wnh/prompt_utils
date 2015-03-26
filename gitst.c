@@ -32,11 +32,6 @@ main(int argc, char **argv)
 
   if(pid == 0) //child
   {
-    /*
-     * use pipe(int[2]) to make a pipe to duplicate
-     * Use dup2(int, int) do duplicate stdout so you can look at it in the
-     * parent process
-     */
     if(dup2(pipes[1], STDOUT_FILENO)  == -1)
     {
       perror("Error duplicating stdout");
@@ -55,8 +50,10 @@ main(int argc, char **argv)
   br = &gitbuff[3];
   putchar('(');
 
-  while(*br != '.' && *br != '\0')
+  while(*br != '\0')
   {
+    // Three dots separate the branch from the tracking branch
+    if(*br == '.' && *(br+1) == '.' && *(br+2) == '.') break;
     putchar(*br++);
   }
 
