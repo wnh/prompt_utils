@@ -38,7 +38,7 @@ main(int argc, char **argv)
       exit(1);
     }
     close(STDERR_FILENO);
-    ret =  execlp("git", "git", "status", "-z", "-b", (char*)0);
+    ret =  execlp("git", "git", "branch", "--list", (char*)0);
   }
 
   waitpid(pid, &childst, 0);
@@ -47,13 +47,14 @@ main(int argc, char **argv)
   }
 
   gitlen = read(pipes[0], gitbuff, GITBUF);
-  br = &gitbuff[3];
+  br = gitbuff;
   putchar('(');
 
-  while(*br != '\0')
+  while(*br++ != '*') {}
+  // skip the '*' and the space after it
+  br++;
+  while(*br != '\n')
   {
-    // Three dots separate the branch from the tracking branch
-    if(*br == '.' && *(br+1) == '.' && *(br+2) == '.') break;
     putchar(*br++);
   }
 
