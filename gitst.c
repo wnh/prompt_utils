@@ -1,35 +1,28 @@
 
 #include <stdio.h>
+#include <string.h>
 #include "lib/proc.h"
 
 int
 main(int argc, char **argv)
 {
-
   char* gitbuff;
   int out = run_proc(&gitbuff, "git", "branch", "--list", 0);
-  //int out = run_proc(&gitbuff, "ls", "-l", "-h", 0);
   if (out != 0)
   {
-    fprintf(stderr, "Error running subprocess:%d\n", out);
     exit(1);
   }
-  //printf("run_proc exit code = %d\nresponse= '''%s'''\n", out, gitbuff);
 
-  char *br;
-
-  br = gitbuff;
-  putchar('(');
-
-  while(*br++ != '*') {}
-  // skip the '*' and the space after it
-  br++;
-  while(*br != '\n')
+  char *token;
+  char *sep=" \r\n";
+  int next = 0;
+  while((token = strsep(&gitbuff, sep)) != NULL)
   {
-    putchar(*br++);
-  }
-
-  putchar(')');
-  putchar('\n');
+    if (token[0] == '*')  {
+      token = strsep(&gitbuff, sep);
+      printf("(%s)", token);
+      break;
+    }
+   }
+  return 0;
 }
-
