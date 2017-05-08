@@ -1,7 +1,7 @@
 
 PROGS=     swd gitst
 
-PREFIX=    /usr/local
+PREFIX=    $(HOME)
 BINDIR=    $(PREFIX)/bin
 CFLAGS=    -g
 
