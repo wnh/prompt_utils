@@ -24,8 +24,7 @@ main(int argc, char **argv)
   int next = 0;
   char *lastpth = NULL;
 
-  while((c = getopt(argc, argv, "hw:")) != -1)
-  {
+  while((c = getopt(argc, argv, "hw:")) != -1) {
     switch(c)
     {
     case 'w':
@@ -39,8 +38,7 @@ main(int argc, char **argv)
     }
   } 
   
-  if (getcwd(pathbuf, PATH_MAX * sizeof(char)) == NULL )
-  {
+  if (getcwd(pathbuf, PATH_MAX * sizeof(char)) == NULL ) {
     perror("Error getting current working directory");
     return 1;
   }
@@ -48,11 +46,9 @@ main(int argc, char **argv)
   home = getenv("HOME");
 
   realhome = realpath(home, NULL);
-  if(realhome != NULL)
-  {
+  if(realhome != NULL) {
     home = realhome;
-  }
-  else {
+  } else {
     perror("Faild resolving home path");
     exit(1);
   }
@@ -60,27 +56,22 @@ main(int argc, char **argv)
   int homelen = strlen(home);
   int in_home = starts_with(home, pathbuf, homelen);
 
-
   if(in_home)
     path = pathbuf + homelen;
   else
     path = pathbuf;
 
-  if (in_home) 
-  {
+  if (in_home) {
     putchar('~');
   }
 
-  while(*path != '\0')
-  {
-    if(next)
-    {
+  while(*path != '\0') {
+    if(next) {
       putchar(*path);
       next = 0;
     }
 
-    if(*path == '/')
-    {
+    if(*path == '/') {
       putchar(*path);
       next = 1;
       lastpth = path +2;
